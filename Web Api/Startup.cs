@@ -2,6 +2,7 @@
 using Data.Models;
 using Data.Repository;
 using Microsoft.EntityFrameworkCore;
+using Web_Api;
 
 public class Startup
 {
@@ -20,6 +21,7 @@ public class Startup
         services.AddDbContext<WebApiContext>(s => s.UseSqlServer(connectionString));
         services.AddScoped<IRepository<Customer>, CustomerRepository>();
         services.AddScoped<IRepository<CurrentWeather>, WeatherRepository>();
+        IoCContainer.Register<IRepository<Customer>, CustomerRepository>();
  
     }
     public void Configure(IApplicationBuilder app)

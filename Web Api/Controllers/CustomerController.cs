@@ -13,7 +13,10 @@ namespace Web_Api.Controllers
 
         public CustomerController(IRepository<Customer> customers)
         {
-            this.customers = customers;
+           // this.customers = customers;
+
+            IRepository<Customer> repo = IoCContainer.Resolve<IRepository<Customer>>();
+            this.customers = repo;
         }
         [HttpGet]
         public IEnumerable<Customer> Get()
