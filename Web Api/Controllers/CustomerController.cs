@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Web_Api.Controllers
 {
-    [Route("{controller}")]
+    [Route("/customer")]
     [ApiController]
     public class CustomerController : ControllerBase
     {
@@ -13,10 +13,9 @@ namespace Web_Api.Controllers
 
         public CustomerController(IRepository<Customer> customers)
         {
-           // this.customers = customers;
-
-            IRepository<Customer> repo = IoCContainer.Resolve<IRepository<Customer>>();
-            this.customers = repo;
+           this.customers = customers;
+           // IRepository<Customer> repo = IoCContainer.Resolve<IRepository<Customer>>();
+           //this.customers = repo;
         }
         [HttpGet]
         public IEnumerable<Customer> Get()
@@ -32,17 +31,18 @@ namespace Web_Api.Controllers
         [HttpPost]
         public void Post([FromQuery] Customer value)
         {
-
+            customers.Update(value);
         }
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] Customer value)
         {
-
+            customers.Add(value);
         }
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-
+            var entity = customers.FindById(id);
+            customers.Delete(entity);
         }
     }
 }

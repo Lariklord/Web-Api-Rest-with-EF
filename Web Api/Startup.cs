@@ -2,6 +2,7 @@
 using Data.Models;
 using Data.Repository;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using Web_Api;
 
 public class Startup
@@ -21,17 +22,28 @@ public class Startup
         services.AddDbContext<WebApiContext>(s => s.UseSqlServer(connectionString));
         services.AddScoped<IRepository<Customer>, CustomerRepository>();
         services.AddScoped<IRepository<CurrentWeather>, WeatherRepository>();
-        IoCContainer.Register<IRepository<Customer>, CustomerRepository>();
+        services.AddSwaggerGen(c =>
+        {
+            c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+        });
+        //IoCContainer.Register<IRepository<Customer>, CustomerRepository>();
+        //IoCContainer.Register<IRepository<CurrentWeather>, WeatherRepository>();
  
     }
     public void Configure(IApplicationBuilder app)
     {
-        app.UseHttpsRedirection();
+        app.UseSwagger();
+        app.UseSwaggerUI(c =>
+        {
+            c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API v1");
+        });
+        
         if (env.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
         }
         app.UseRouting();
+        //app.UseHttpsRedirection();
         app.UseEndpoints(endpoints =>{
             endpoints.MapControllers();
         });

@@ -17,10 +17,15 @@ namespace Data
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<CurrentWeather>().HasData(
+               new CurrentWeather { Id = 1, Status = "Cloud", MinTemp = 20, MaxTemp = 22 },
+               new CurrentWeather { Id = 2, Status = "Clear", MinTemp = 18, MaxTemp = 20 }
+               );
             modelBuilder.Entity<Customer>().HasData(
                 new Customer { BirthDate = new DateTime(2003, 11, 25), Email = "vladklunduk8@gmail.com", Name = "Vlad",Id=1 },
                 new Customer { BirthDate = new DateTime(2002, 5, 10), Email = "some@gmail.com", Name = "Vova" ,Id=2}
                 );
+           
         }
     }
 }
